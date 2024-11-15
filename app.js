@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const { marked } = require('marked'); // 引入 marked
 const app = express();
-const PORT = 3000;
+const port = 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,8 +30,18 @@ app.post('/notes', (req, res) => {
     });
 });
 
+// 渲染 Markdown
+app.get('/render', (req, res) => {
+    fs.readFile('notes.txt', 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).send('Error reading notes');
+        }
+        const html = marked(data); // 将 Markdown 转换为 HTML
+        res.send(html);
+    });
+});
+
 // 启动服务器
-// 在 0.0.0.0:3000 上监听
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running at http://0.0.0.0:${PORT}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server is running on http://0.0.0.0:${port}`);
 });

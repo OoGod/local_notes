@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>局域网记事本</title>
+    <style>
+        #preview {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>局域网记事本</h1>
     <textarea id="notes" rows="10" cols="30"></textarea><br>
     <button onclick="saveNotes()">保存</button>
+    <button onclick="renderMarkdown()">渲染 Markdown</button>
+
+    <h2>预览</h2>
+    <div id="preview"></div>
 
     <script>
         function loadNotes() {
@@ -34,8 +45,17 @@
             });
         }
 
+        function renderMarkdown() {
+            fetch('/render')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('preview').innerHTML = data;
+                });
+        }
+
         // 页面加载时获取记事本内容
         window.onload = loadNotes;
     </script>
 </body>
 </html>
+
