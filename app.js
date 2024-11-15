@@ -31,6 +31,6 @@ app.post('/notes', (req, res) => {
 
 // 启动服务器
 // 在 0.0.0.0:3000 上监听
-app.listen(port, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running at http://0.0.0.0:${PORT}`);
 });
