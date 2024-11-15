@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>局域网记事本</title>
+</head>
+<body>
+    <h1>局域网记事本</h1>
+    <textarea id="notes" rows="10" cols="30"></textarea><br>
+    <button onclick="saveNotes()">保存</button>
+
+    <script>
+        function loadNotes() {
+            fetch('/notes')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('notes').value = data;
+                });
+        }
+
+        function saveNotes() {
+            const notes = document.getElementById('notes').value;
+            fetch('/notes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ notes }),
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+            });
+        }
+
+        // 页面加载时获取记事本内容
+        window.onload = loadNotes;
+    </script>
+</body>
+</html>
